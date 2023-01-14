@@ -19,7 +19,8 @@
 ## 部署:
 * 注册 [Glitch](https://glitch.com/)
 * config.json 的 17 行修改 UUID
-* server.js 的 160 行修改自己的 URL， 44 行修改哪吒参数
+* server.js 的 106 行修改自己的 URL， 44 行修改哪吒参数
+* 部署成功后 velss ws 的路径为: `/api`，如要修改，可以寻找并替换 server.js 的 90、96、97 行里的 api
 * 需要应用的 js
   | 命令 | 是否必须 | 说明 |
   | ------------ | ------ | ------ |
