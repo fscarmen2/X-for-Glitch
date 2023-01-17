@@ -24,7 +24,7 @@
 * 需要应用的 js
   | 命令 | 是否必须 | 说明 |
   | ------------ | ------ | ------ |
-  | <URL>/start | 是 | 运行 vless |
+  | <URL>/start | 否 | 部署好后自动运行的，启动 vless |
   | <URL>/nezha | 否 | 运行哪吒 | 以 / 开头 |
   | <URL>/api | 否 | 查看 vless 运行结果 Bad Request 即是 OK |
   | <URL>/status | 否 | 查看后台进程  |
@@ -37,7 +37,9 @@
 
 ![image](https://user-images.githubusercontent.com/92626977/212469659-76bacf83-423f-4625-894a-eadf2ee1a17d.png)
 
-<img width="1232" alt="image" src="https://user-images.githubusercontent.com/92626977/212469743-f54c1122-d145-4db1-a78e-c94e0c41d169.png">
+<img width="1129" alt="image" src="https://user-images.githubusercontent.com/92626977/212889939-3d8a7379-959d-421e-bf93-8938182eeca0.png">
+
+<img width="1341" alt="image" src="https://user-images.githubusercontent.com/92626977/212891133-6bf8c829-d085-437b-9d2e-d1d9e8d39047.png">
 
 <img width="1175" alt="image" src="https://user-images.githubusercontent.com/92626977/212469767-073a170b-dbb3-49bf-bdac-57eba2eae324.png">
 
@@ -48,8 +50,6 @@
 <img width="1467" alt="image" src="https://user-images.githubusercontent.com/92626977/212469937-bd448a4e-577c-4cac-9028-dfb8c9411e91.png">
 
 <img width="577" alt="image" src="https://user-images.githubusercontent.com/92626977/212469959-f2762c30-5cb1-4a31-9f77-0dad6319bd90.png">
-
-<img width="477" alt="image" src="https://user-images.githubusercontent.com/92626977/212470037-58621fe0-9f45-452e-97b4-419565920d61.png">
 
 <img width="593" alt="image" src="https://user-images.githubusercontent.com/92626977/212469999-af9685ff-3392-42f1-88bb-0e615a61ab9b.png">
 
