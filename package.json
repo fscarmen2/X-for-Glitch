@@ -1,8 +1,12 @@
 {
-  "name": "glitch-mvp-node",
-  "version": "0.1.0",
-  "description": "A simple Node app built on fastify, instantly up and running.",
+  "name": "express-hello-world",
+  "version": "1.0.0",
+  "description": "Express Hello World",
   "main": "server.js",
+  "repository": "",
+  "author": "fscarmen",
+  "license": "MIT",
+  "private": false,
   "scripts": {
     "start": "node server.js"
   },
@@ -12,14 +16,6 @@
     "request": "^2.88.2"
   },
   "engines": {
-    "node": "14.x"
-  },
-  "repository": {
-    "url": "https://glitch.com/edit/#!/glitch-mvp-node"
-  },
-  "license": "MIT",
-  "keywords": [
-    "node",
-    "glitch"
-  ]
+    "node": ">=14"
+  }
 }

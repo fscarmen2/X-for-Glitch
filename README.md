@@ -1,4 +1,4 @@
-# Vless for Glitch
+# Xray for Glitch
 
 * * *
 
@@ -12,51 +12,47 @@
 * * *
 
 ## 项目特点:
-* 本项目用于在 [Glitch](https://glitch.com/) 免费服务上部署 VLESS
+* 本项目用于在 [Glitch](https://glitch.com/) 部署 Xray，采用的方案为 Argo + Xray + WebSocket + TLS
+* 在浏览器查看系统各项信息，方便直观
+* 使用 CloudFlare 的 Argo 隧道，直接优选 + 隧道，CDN 不用再做 workers
+* 回流分流，同时支持 Xray 4 种主流协议: vless /  vmess / trojan / shadowsocks
+* vmess 和 vless 的 uuid，trojan 和 shadowsocks 的 password，各协议的 ws 路径既可以自定义，又或者使用默认值
 * 集成哪吒探针，可以自由选择是否安装
-* 部署完成如发现不能上网，请检查域名是否被墙，可使用 Cloudflare CDN 或者 worker 解决。
+* 前端 js 定时保活，会玩的用户可以根据具体情况修改间隔时间
+* 节点信息以 V2rayN / Clash / 小火箭 链接方式输出
+* Xray 文件重新编译官方文件增加隐秘性，修改了运行时的显示信息，文件为: https://github.com/XTLS/Xray-core/blob/main/core/core.go
 
 ## 部署:
 * 注册 [Glitch](https://glitch.com/)
-* config.json 的 17 行修改 UUID
-* server.js 的 106 行修改自己的 URL
-* 如果不需要哪吒，删除 server.js 的 136-153行；如果需要，则 44 和 143 行修改哪吒参数
-* 部署成功后 velss ws 的路径为: `/api`，如要修改，可以寻找并替换 server.js 的 90、96、97 行里的 api
+* entrypoint.sh 第 4-8 行设置各变量，如果不需要哪吒，删除或注释 6-8 行
+
+* 用到的变量
+  | 变量名        | 是否必须 | 默认值 | 备注 |
+  | ------------ | ------ | ------ | ------ |
+  | UUID         | 否 | de04add9-5c68-8bab-950c-08cd5320df18 | 可在线生成 https://www.zxgj.cn/g/uuid |
+  | WSPATH       | 否 | argo | 勿以 / 开头，各协议路径为 `/WSPATH-协议`，如 `/argo-vless`,`/argo-vmess`,`/argo-trojan`,`/argo-shadowsocks` |
+  | NEZHA_SERVER | 否 |        | 哪吒探针服务端的 IP 或域名 |
+  | NEZHA_PORT   | 否 |        | 哪吒探针服务端的端口 |
+  | NEZHA_KEY    | 否 |        | 哪吒探针客户端专用 Key |
+
 * 需要应用的 js
-  | 命令 | 是否必须 | 说明 |
-  | ------------ | ------ | ------ |
-  | <URL>/start | 否 | 部署好后自动运行的，启动 vless |
-  | <URL>/nezha | 否 | 运行哪吒 | 以 / 开头 |
-  | <URL>/api | 否 | 查看 vless 运行结果 Bad Request 即是 OK |
-  | <URL>/status | 否 | 查看后台进程  |
+  | 命令 | 说明 |
+  | ---- |------ |
+  | <URL>/list | 查看节点数据 |
+  | <URL>/status | 查看后台进程 |
+  | <URL>/listen | 查看后台监听端口 |
 
-![image](https://user-images.githubusercontent.com/92626977/212469541-9f1ceb5e-d525-4787-8142-0df4dafdbbe8.png)
+<img width="1600" alt="image" src="https://user-images.githubusercontent.com/92626977/216796019-15e46823-c7b0-4a11-8128-31722e1bb76f.png">
 
-![image](https://user-images.githubusercontent.com/92626977/212469554-4ccd234c-8a49-4927-bada-2a8e947e9a37.png)
+<img width="1201" alt="image" src="https://user-images.githubusercontent.com/92626977/216796097-6613030d-92b2-4472-b341-83abe4674b40.png">
 
-![image](https://user-images.githubusercontent.com/92626977/212469562-5de97b9e-2d6f-41f1-9cea-fd2ade3df07b.png)
+<img width="1436" alt="image" src="https://user-images.githubusercontent.com/92626977/216795517-dc0d8519-11fb-4885-a804-3d96a801ec1e.png">
 
-![image](https://user-images.githubusercontent.com/92626977/212469659-76bacf83-423f-4625-894a-eadf2ee1a17d.png)
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/92626977/216795556-37b51817-6971-4eee-980e-f96588ee04d7.png">
 
-<img width="1129" alt="image" src="https://user-images.githubusercontent.com/92626977/212889939-3d8a7379-959d-421e-bf93-8938182eeca0.png">
+<img width="966" alt="image" src="https://user-images.githubusercontent.com/92626977/216795892-f5fea4b4-680b-4ddd-8531-3e4af8bfa030.png">
 
-<img width="1341" alt="image" src="https://user-images.githubusercontent.com/92626977/212891133-6bf8c829-d085-437b-9d2e-d1d9e8d39047.png">
-
-<img width="1175" alt="image" src="https://user-images.githubusercontent.com/92626977/212469767-073a170b-dbb3-49bf-bdac-57eba2eae324.png">
-
-<img width="1210" alt="image" src="https://user-images.githubusercontent.com/92626977/212470356-b3a03bf6-6484-4b43-ad75-671692c2be4b.png">
-
-<img width="1410" alt="image" src="https://user-images.githubusercontent.com/92626977/212469906-a2ff6091-4802-4492-b282-cf652b5b17e7.png">
-
-<img width="1467" alt="image" src="https://user-images.githubusercontent.com/92626977/212469937-bd448a4e-577c-4cac-9028-dfb8c9411e91.png">
-
-<img width="577" alt="image" src="https://user-images.githubusercontent.com/92626977/212469959-f2762c30-5cb1-4a31-9f77-0dad6319bd90.png">
-
-<img width="593" alt="image" src="https://user-images.githubusercontent.com/92626977/212469999-af9685ff-3392-42f1-88bb-0e615a61ab9b.png">
-
-<img width="512" alt="image" src="https://user-images.githubusercontent.com/92626977/212470068-609dedea-2bfd-4ccf-80b2-6ed2a82e3dc5.png">
-
-<img width="1140" alt="image" src="https://user-images.githubusercontent.com/92626977/212470157-77b77f8c-dcb8-425e-81a4-83bc1881126c.png">
+<img width="732" alt="image" src="https://user-images.githubusercontent.com/92626977/216795939-f58d663d-adad-4088-8898-ad271c24e762.png">
 
 <img width="499" alt="image" src="https://user-images.githubusercontent.com/92626977/212470733-446938ae-e403-424b-b7ce-51e775b30ed2.png">
 
