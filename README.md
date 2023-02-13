@@ -14,7 +14,7 @@
 ## 项目特点:
 * 本项目用于在 [Glitch](https://glitch.com/) 部署 Xray，采用的方案为 Argo + Xray + WebSocket + TLS
 * 在浏览器查看系统各项信息，方便直观
-* 使用 CloudFlare 的 Argo 隧道，直接优选 + 隧道，CDN 不用再做 workers
+* 使用 CloudFlare 的 Argo 隧道，既支持没有认证的临时隧道，又支持通过 token 申请的固定域名(需要信用卡认证，有免费套餐），直接优选 + 隧道，CDN 不用再做 workers
 * 回流分流，同时支持 Xray 4 种主流协议: vless /  vmess / trojan / shadowsocks
 * vmess 和 vless 的 uuid，trojan 和 shadowsocks 的 password，各协议的 ws 路径既可以自定义，又或者使用默认值
 * 集成哪吒探针，可以自由选择是否安装
@@ -24,7 +24,7 @@
 
 ## 部署:
 * 注册 [Glitch](https://glitch.com/)
-* entrypoint.sh 第 4-8 行设置各变量，如果不需要哪吒，删除或注释 6-8 行
+* entrypoint.sh 第 4-12 行设置各变量，如果不需要哪吒，删除或注释 6-8 行
 
 * 用到的变量
   | 变量名        | 是否必须 | 默认值 | 备注 |
@@ -34,6 +34,8 @@
   | NEZHA_SERVER | 否 |        | 哪吒探针服务端的 IP 或域名 |
   | NEZHA_PORT   | 否 |        | 哪吒探针服务端的端口 |
   | NEZHA_KEY    | 否 |        | 哪吒探针客户端专用 Key |
+  | ARGO_TOKEN   | 否 |        | Argo 的 Token，ARGO_TOKEN 与 ARGO_DOMAIN 必需一起填了才能生效 |
+  | ARGO_DOMAIN  | 否 |        | Argo 的域名，ARGO_TOKEN 与 ARGO_DOMAIN 必需一起填了才能生效 |
 
 * 需要应用的 js
   | 命令 | 说明 |
@@ -46,7 +48,7 @@
 
 <img width="1201" alt="image" src="https://user-images.githubusercontent.com/92626977/216796097-6613030d-92b2-4472-b341-83abe4674b40.png">
 
-<img width="1436" alt="image" src="https://user-images.githubusercontent.com/92626977/216795517-dc0d8519-11fb-4885-a804-3d96a801ec1e.png">
+<img width="1428" alt="image" src="https://user-images.githubusercontent.com/92626977/218391090-c75f5d7c-7d9a-4112-ac4d-d2773d23a737.png">
 
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/92626977/216795556-37b51817-6971-4eee-980e-f96588ee04d7.png">
 
