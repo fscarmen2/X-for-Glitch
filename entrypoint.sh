@@ -4,12 +4,12 @@
 WSPATH=${WSPATH:-'argo'}
 UUID=${UUID:-'de04add9-5c68-8bab-950c-08cd5320df18'}
 
-NEZHA_SERVER=probe.nezha.org # 哪吒三个参数，不需要的话可以留空，删除或在这三行最前面加 # 以注释
-NEZHA_PORT=5555
-NEZHA_KEY=2620ZAP1A0Pk6hXEys
+NEZHA_SERVER= # 哪吒三个参数，不需要的话可以留空，删除或在这三行最前面加 # 以注释
+NEZHA_PORT=
+NEZHA_KEY=2
 
-ARGO_TOKEN=eyJhIjoiOWNj... # Argo 固定域名隧道的两个参数，不需要的话可以留空，删除或在这三行最前面加 # 以注释
-ARGO_DOMAIN=glitch.domain.tk
+ARGO_AUTH='eyJhIjoiOWNj...' # Argo 固定域名隧道的两个参数,这个可以填 Json 内容或 Token 内容，获取方式看 https://github.com/fscarmen2/X-for-Glitch，不需要的话可以留空，删除或在这三行最前面加 # 以注释
+ARGO_DOMAIN=glitch.xxxxxx.tk
 
 generate_config() {
   cat > config.json << EOF
@@ -198,8 +198,38 @@ generate_config() {
     "outbounds":[
         {
             "protocol":"freedom"
+        },
+        {
+            "tag":"WARP",
+            "protocol":"wireguard",
+            "settings":{
+                "secretKey":"cKE7LmCF61IhqqABGhvJ44jWXp8fKymcMAEVAzbDF2k=",
+                "address":[
+                    "172.16.0.2/32",
+                    "fd01:5ca1:ab1e:823e:e094:eb1c:ff87:1fab/128"
+                ],
+                "peers":[
+                    {
+                        "publicKey":"bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
+                        "endpoint":"162.159.193.10:2408"
+                    }
+                ]
+            }
         }
-    ]
+    ],
+    "routing":{
+        "domainStrategy":"AsIs",
+        "rules":[
+            {
+                "type":"field",
+                "domain":[
+                    "domain:openai.com",
+                    "domain:ai.com"
+                ],
+                "outboundTag":"WARP"
+            }
+        ]
+    }
 }
 EOF
 }
@@ -208,7 +238,7 @@ generate_argo() {
   cat > argo.sh << ABC
 #!/usr/bin/env bash
 
-ARGO_TOKEN=${ARGO_TOKEN}
+ARGO_AUTH=${ARGO_AUTH}
 ARGO_DOMAIN=${ARGO_DOMAIN}
 
 # 下载并运行 Argo
@@ -217,15 +247,13 @@ check_file() {
 }
 
 run() {
-  if [[ -e cloudflared && ! \$(pgrep -laf cloudflared) ]]; then
-    if [[ -z "\${ARGO_TOKEN}" || -z "\${ARGO_DOMAIN}" ]]; then
-      ./cloudflared tunnel --url http://localhost:8080 --no-autoupdate > argo.log 2>&1 &
-      sleep 10
-      ARGO_DOMAIN=\$(cat argo.log | grep -oE "https://.*[a-z]+cloudflare.com" | sed "s#https://##")
-    else
-      ./cloudflared tunnel --no-autoupdate run --token ${ARGO_TOKEN} 2>&1 &
-    fi
+  if [[ -n "\${ARGO_AUTH}" && -n "\${ARGO_DOMAIN}" ]]; then
+    [[ "\$ARGO_AUTH" =~ TunnelSecret ]] && echo "\$ARGO_AUTH" | sed 's@{@{"@g;s@[,:]@"\0"@g;s@}@"}@g' > tunnel.json && echo -e "tunnel: \$(sed "s@.*TunnelID:\(.*\)}@\1@g" <<< "\$ARGO_AUTH")\ncredentials-file: /app/tunnel.json" > tunnel.yml && ./cloudflared tunnel --no-autoupdate --config tunnel.yml run 2>&1 &
+    [[ \$ARGO_AUTH =~ ^[A-Z0-9a-z]{120,250}$ ]] && ./cloudflared tunnel --no-autoupdate run --token ${ARGO_AUTH} 2>&1 &
+  else
+    ./cloudflared tunnel --no-autoupdate --logfile argo.log --loglevel info --url http://localhost:8080 2>&1 &
   fi
+
 }
 
 export_list() {
