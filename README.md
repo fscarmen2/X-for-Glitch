@@ -13,6 +13,7 @@
 
 ## 项目特点:
 * 本项目用于在 [Glitch](https://glitch.com/) 部署 Xray，采用的方案为 Argo + Xray + WebSocket + TLS
+* 解锁 ChatGPT
 * 在浏览器查看系统各项信息，方便直观
 * 使用 CloudFlare 的 Argo 隧道，既支持没有认证的临时隧道，又支持通过 token 申请的固定域名(需要信用卡认证，有免费套餐），直接优选 + 隧道，CDN 不用再做 workers
 * 回流分流，同时支持 Xray 4 种主流协议: vless /  vmess / trojan / shadowsocks
@@ -24,9 +25,16 @@
 
 ## 部署:
 * 注册 [Glitch](https://glitch.com/)
+
+* server.js 第 1、2 行修改页面访问的用户名和密码
+
+  | 变量名        | 是否必须 | 默认值 | 备注 |
+  | ------------ | ------ | ------ | ------ |
+  | WEB_USERNAME | 是 | admin | 网页的用户名 |
+  | WEB_PASSWORD | 是 | password | 网页的密码 |
+
 * entrypoint.sh 第 4-12 行设置各变量，如果不需要哪吒，删除或注释 6-8 行
 
-* 用到的变量
   | 变量名        | 是否必须 | 默认值 | 备注 |
   | ------------ | ------ | ------ | ------ |
   | UUID         | 否 | de04add9-5c68-8bab-950c-08cd5320df18 | 可在线生成 https://www.zxgj.cn/g/uuid |
@@ -47,6 +55,8 @@
 <img width="1600" alt="image" src="https://user-images.githubusercontent.com/92626977/216796019-15e46823-c7b0-4a11-8128-31722e1bb76f.png">
 
 <img width="1201" alt="image" src="https://user-images.githubusercontent.com/92626977/216796097-6613030d-92b2-4472-b341-83abe4674b40.png">
+
+<img width="1090" alt="image" src="https://user-images.githubusercontent.com/92626977/221387459-30871976-7032-4993-9c46-244bdec7dc89.png">
 
 <img width="1428" alt="image" src="https://user-images.githubusercontent.com/92626977/218391090-c75f5d7c-7d9a-4112-ac4d-d2773d23a737.png">
 
