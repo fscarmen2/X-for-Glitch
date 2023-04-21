@@ -8,11 +8,13 @@ UUID=${UUID:-'de04add9-5c68-8bab-950c-08cd5320df18'}
 NEZHA_SERVER= 
 NEZHA_PORT=
 NEZHA_KEY=
+NEZHA_TLS=
 
 # Argo 固定域名隧道的两个参数,这个可以填 Json 内容或 Token 内容，获取方式看 https://github.com/fscarmen2/X-for-Glitch，不需要的话可以留空，删除或在这三行最前面加 # 以注释
 ARGO_AUTH=''
 ARGO_DOMAIN=
 
+# 生成 web.js 配置文件
 generate_config() {
   cat > config.json << EOF
 {
@@ -250,12 +252,13 @@ check_file() {
 
 run() {
   if [[ -n "\${ARGO_AUTH}" && -n "\${ARGO_DOMAIN}" ]]; then
-    [[ "\$ARGO_AUTH" =~ TunnelSecret ]] && echo "\$ARGO_AUTH" | sed 's@{@{"@g;s@[,:]@"\0"@g;s@}@"}@g' > tunnel.json && echo -e "tunnel: \$(sed "s@.*TunnelID:\(.*\)}@\1@g" <<< "\$ARGO_AUTH")\ncredentials-file: /app/tunnel.json" > tunnel.yml && ./cloudflared tunnel --edge-ip-version auto --config tunnel.yml --url http://localhost:8080 run 2>&1 &
+    [[ "\$ARGO_AUTH" =~ TunnelSecret ]] && echo "\$ARGO_AUTH" | sed 's@{@{"@g;s@[,:]@"\0"@g;s@}@"}@g' > tunnel.json && echo -e "tunnel: \$(sed "s@.*TunnelID:\(.*\)}@\1@g" <<< "\$ARGO_AUTH")\ncredentials-file: $PWD/tunnel.json" > tunnel.yml && ./cloudflared tunnel --edge-ip-version auto --config tunnel.yml --url http://localhost:8080 run 2>&1 &
     [[ \$ARGO_AUTH =~ ^[A-Z0-9a-z=]{120,250}$ ]] && ./cloudflared tunnel --edge-ip-version auto run --token ${ARGO_AUTH} 2>&1 &
   else
-    ./cloudflared tunnel --edge-ip-version auto --no-autoupdate --logfile argo.log --loglevel info --url http://localhost:8080 2>&1 &
+    ./cloudflared tunnel --edge-ip-version auto --no-autoupdate --url http://localhost:8080 2>&1 &
     sleep 5
-    ARGO_DOMAIN=\$(cat argo.log | grep -o "info.*https://.*trycloudflare.com" | sed "s@.*https://@@g" | tail -n 1)
+    local LOCALHOST=\$(ss -nltp | grep '"cloudflared"' | awk '{print \$4}')
+    ARGO_DOMAIN=\$(wget -qO- http://\$LOCALHOST/quicktunnel | cut -d\" -f4)
   fi
 }
 
@@ -297,6 +300,7 @@ Clash:
 EOF
   cat list
 }
+
 check_file
 run
 export_list
@@ -311,10 +315,11 @@ generate_nezha() {
 NEZHA_SERVER=${NEZHA_SERVER}
 NEZHA_PORT=${NEZHA_PORT}
 NEZHA_KEY=${NEZHA_KEY}
+TLS=${NEZHA_TLS:+'--tls'}
 
 # 检测是否已运行
 check_run() {
-  [[ \$(pgrep -laf nezha-agent) ]] && echo "哪吒客户端正在运行中!" && exit
+  [[ \$(pgrep -laf nezha-agent) ]] && echo "哪吒客户端正在运行中" && exit
 }
 
 # 三个变量不全则不安装哪吒客户端
@@ -333,7 +338,7 @@ download_agent() {
 
 # 运行客户端
 run() {
-  [[ ! \$PROCESS =~ nezha-agent && -e nezha-agent ]] && ./nezha-agent -s \${NEZHA_SERVER}:\${NEZHA_PORT} -p \${NEZHA_KEY} 2>&1 &
+  [[ ! \$PROCESS =~ nezha-agent && -e nezha-agent ]] && nohup ./nezha-agent -s \${NEZHA_SERVER}:\${NEZHA_PORT} -p \${NEZHA_KEY} \${TLS} >/dev/null 2>&1 &
 }
 
 check_run
