@@ -6,6 +6,9 @@
 
 - [项目特点](README.md#项目特点)
 - [部署](README.md#部署)
+- [Argo Json 的获取](README.md#argo-json-的获取)
+- [Argo Token 的获取](README.md#argo-token-的获取)
+- [TTYD webssh 的部署](README.md#ttyd-webssh-的部署)
 - [鸣谢下列作者的文章和项目](README.md#鸣谢下列作者的文章和项目)
 - [免责声明](README.md#免责声明)
 
@@ -21,19 +24,14 @@
 * 集成哪吒探针，可以自由选择是否安装
 * 前端 js 定时保活，会玩的用户可以根据具体情况修改间隔时间
 * 节点信息以 V2rayN / Clash / 小火箭 链接方式输出
+* 可以使用浏览器访问，使用 ttyd，ssh over http2
 * Xray 文件重新编译官方文件增加隐秘性，修改了运行时的显示信息，文件为: https://github.com/XTLS/Xray-core/blob/main/core/core.go
+
 
 ## 部署:
 * 注册 [Glitch](https://glitch.com/)
 
-* server.js 第 1、2 行修改页面访问的用户名和密码
-
-  | 变量名        | 是否必须 | 默认值 | 备注 |
-  | ------------ | ------ | ------ | ------ |
-  | WEB_USERNAME | 是 | admin | 网页的用户名 |
-  | WEB_PASSWORD | 是 | password | 网页的密码 |
-
-* entrypoint.sh 第 4-15 行设置各变量，如果不需要哪吒，删除或注释 8-11 行
+* 修改 `.env` 文件的环境变量
 
   | 变量名        | 是否必须 | 默认值 | 备注 |
   | ------------ | ------ | ------ | ------ |
@@ -45,6 +43,9 @@
   | NEZHA_TLS    | 否 |        | 哪吒探针是否启用 SSL/TLS 加密 ，如不启用不要该变量，如要启用填"1" |
   | ARGO_AUTH    | 否 |        | Argo 的 Token 或者 json 值 |
   | ARGO_DOMAIN  | 否 |        | Argo 的域名，须与 ARGO_DOMAIN 必需一起填了才能生效 |
+  | WEB_USERNAME | 否 | admin  | 网页和 webssh 的用户名 |
+  | WEB_PASSWORD | 否 | password | 网页和 webssh 的密码 |
+  | SSH_DOMAIN   | 否 |        | webssh 的域名，用户名和密码就是 <WEB_USERNAME> 和 <WEB_PASSWORD> |
 
 * 需要应用的 js
   | 命令 | 说明 |
@@ -55,11 +56,7 @@
 
 <img width="1600" alt="image" src="https://user-images.githubusercontent.com/92626977/216796019-15e46823-c7b0-4a11-8128-31722e1bb76f.png">
 
-<img width="1201" alt="image" src="https://user-images.githubusercontent.com/92626977/216796097-6613030d-92b2-4472-b341-83abe4674b40.png">
-
-<img width="1090" alt="image" src="https://user-images.githubusercontent.com/92626977/221387459-30871976-7032-4993-9c46-244bdec7dc89.png">
-
-<img width="1428" alt="image" src="https://user-images.githubusercontent.com/92626977/218391090-c75f5d7c-7d9a-4112-ac4d-d2773d23a737.png">
+<img width="1428" alt="image" src="https://user-images.githubusercontent.com/92626977/235583033-4a953353-1127-44c3-8b02-77c995b3e4b2.png">
 
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/92626977/216795556-37b51817-6971-4eee-980e-f96588ee04d7.png">
 
@@ -70,8 +67,47 @@
 <img width="499" alt="image" src="https://user-images.githubusercontent.com/92626977/212470733-446938ae-e403-424b-b7ce-51e775b30ed2.png">
 
 
+## Argo Json 的获取
+
+用户可以通过 Cloudflare Json 生成网轻松获取: https://fscarmen.cloudflare.now.cc
+
+<img width="842" alt="image" src="https://user-images.githubusercontent.com/62703343/234733074-397bad30-266b-4719-898a-a760a3f0331a.png">
+
+如想手动，可以参考，以 Debian 为例，需要用到的命令，[Deron Cheng - CloudFlare Argo Tunnel 试用](https://zhengweidong.com/try-cloudflare-argo-tunnel)
+
+
+## Argo Token 的获取
+
+详细教程: [群晖套件：Cloudflare Tunnel 内网穿透中文教程 支持DSM6、7](https://imnks.com/5984.html)
+
+<img width="1409" alt="image" src="https://user-images.githubusercontent.com/92626977/218253461-c079cddd-3f4c-4278-a109-95229f1eb299.png">
+
+<img width="1619" alt="image" src="https://user-images.githubusercontent.com/92626977/218253838-aa73b63d-1e8a-430e-b601-0b88730d03b0.png">
+
+<img width="1155" alt="image" src="https://user-images.githubusercontent.com/92626977/218253971-60f11bbf-9de9-4082-9e46-12cd2aad79a1.png">
+
+
+## TTYD webssh 的部署
+
+* 原理
+```
++---------+     argo     +---------+     http     +--------+    ssh    +-----------+
+| browser | <==========> | CF edge | <==========> |  ttyd  | <=======> | ssh server|
++---------+     argo     +---------+   websocket  +--------+    ssh    +-----------+
+```
+
+* 只能使用 Json 方式建的隧道，不能使用 Token
+
+<img width="1643" alt="image" src="https://user-images.githubusercontent.com/92626977/235453084-a8c55417-18b4-4a47-9eef-ee3053564bff.png">
+
+<img width="1347" alt="image" src="https://user-images.githubusercontent.com/92626977/235453394-2d8fd1e9-02d0-4fa6-8c20-dda903fd06ae.png">
+
+<img width="1540" alt="image" src="https://user-images.githubusercontent.com/92626977/235454653-3ac83b16-b6f4-477b-bccf-2cce8bcfbabe.png">
+
+
 ## 鸣谢下列作者的文章和项目:
 大佬 Nike Jeff 的 trojan 项目，https://github.com/hrzyang/glitch-trojan ，在此基础上作修改。
+
 
 ## 免责声明:
 * 本程序仅供学习了解, 非盈利目的，请于下载后 24 小时内删除, 不得用作任何商业用途, 文字、数据及图片均有所属版权, 如转载须注明来源。
