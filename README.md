@@ -47,10 +47,11 @@
 
 * 需要应用的 js
   | 命令 | 说明 |
-  | ---- |------ |
-  | <URL>/list | 查看节点数据 |
+  | ------------ |----------- |
+  | <URL>/list   | 查看节点数据 |
   | <URL>/status | 查看后台进程 |
   | <URL>/listen | 查看后台监听端口 |
+  | <URL>/test   | 测试是否为只读系统 |  
 
 * 前往 [Glitch](https://glitch.com/) 注册账户，然后点击右边按钮 =====> [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/import/github/fscarmen2/X-for-Glitch)
 

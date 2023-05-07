@@ -84,11 +84,12 @@ app.get("/info", function (req, res) {
 
 // 文件系统只读测试
 app.get("/test", function (req, res) {
-  fs.writeFile("./test.txt", "这里是新创建的文件内容!", function (err) {
-    if (err) {
-      res.send("创建文件失败，文件系统权限为只读：" + err);
+  let cmdStr = 'mount | grep " / " | grep "(ro," >/dev/null';
+  exec(cmdStr, function (error, stdout, stderr) {
+    if (error !== null) {
+      res.send("系统权限为---非只读");
     } else {
-      res.send("创建文件成功，文件系统权限为非只读：");
+      res.send("系统权限为---只读");
     }
   });
 });
@@ -116,14 +117,6 @@ function keep_web_alive() {
       console.log("保活-请求主页-命令行执行成功，响应报文:" + stdout);
     }
   });
-/*  exec("ping -c1 " + url, function (err, stdout, stderr) {
-    if (err) {
-      console.log("保活-请求主页-命令行执行错误：" + err);
-    } else {
-      console.log("保活-请求主页-命令行执行成功，响应报文:" + stdout);
-    }
-  });
-*/
 
   // 2.请求服务器进程状态列表，若web没在运行，则调起
   exec("pgrep -laf web.js", function (err, stdout, stderr) {
