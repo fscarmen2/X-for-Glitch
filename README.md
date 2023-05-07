@@ -29,9 +29,7 @@
 
 
 ## 部署:
-* 注册 [Glitch](https://glitch.com/)
-
-* 修改 `.env` 文件的环境变量
+* `.env` 文件的环境变量说明
 
   | 变量名        | 是否必须 | 默认值 | 备注 |
   | ------------ | ------ | ------ | ------ |
@@ -54,9 +52,9 @@
   | <URL>/status | 查看后台进程 |
   | <URL>/listen | 查看后台监听端口 |
 
-<img width="1600" alt="image" src="https://user-images.githubusercontent.com/92626977/216796019-15e46823-c7b0-4a11-8128-31722e1bb76f.png">
+* 前往 [Glitch](https://glitch.com/) 注册账户，然后点击右边按钮 =====> [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/import/github/fscarmen2/X-for-Glitch)
 
-<img width="1428" alt="image" src="https://user-images.githubusercontent.com/92626977/235583033-4a953353-1127-44c3-8b02-77c995b3e4b2.png">
+<img width="1092" alt="image" src="https://user-images.githubusercontent.com/92626977/236652842-9f2d644a-f8e3-4b5f-ab7f-45d6309a6642.png">
 
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/92626977/216795556-37b51817-6971-4eee-980e-f96588ee04d7.png">
 
