@@ -8,7 +8,7 @@
 - [部署](README.md#部署)
 - [Argo Json 的获取](README.md#argo-json-的获取)
 - [Argo Token 的获取](README.md#argo-token-的获取)
-- [TTYD webssh 的部署](README.md#ttyd-webssh-的部署)
+- [ttyd webssh / filebrowser webftp 的部署](README.md#ttyd-webssh--filebrowser-webftp-的部署)
 - [鸣谢下列作者的文章和项目](README.md#鸣谢下列作者的文章和项目)
 - [免责声明](README.md#免责声明)
 
@@ -24,7 +24,7 @@
 * 集成哪吒探针，可以自由选择是否安装
 * 前端 js 定时保活，会玩的用户可以根据具体情况修改间隔时间
 * 节点信息以 V2rayN / Clash / 小火箭 链接方式输出
-* 可以使用浏览器访问，使用 ttyd，ssh over http2
+* 可以使用浏览器使用 webssh 和 webftp，更方便管理系统
 * Xray 文件重新编译官方文件增加隐秘性，修改了运行时的显示信息，文件为: https://github.com/XTLS/Xray-core/blob/main/core/core.go
 
 
@@ -44,6 +44,7 @@
   | WEB_USERNAME | 否 | admin  | 网页和 webssh 的用户名 |
   | WEB_PASSWORD | 否 | password | 网页和 webssh 的密码 |
   | SSH_DOMAIN   | 否 |        | webssh 的域名，用户名和密码就是 <WEB_USERNAME> 和 <WEB_PASSWORD> |
+  | FTP_DOMAIN   | 否 |        | webftp 的域名，用户名和密码就是 <WEB_USERNAME> 和 <WEB_PASSWORD> |  
 
 * 需要应用的 js
   | 命令 | 说明 |
@@ -86,22 +87,29 @@
 <img width="1155" alt="image" src="https://user-images.githubusercontent.com/92626977/218253971-60f11bbf-9de9-4082-9e46-12cd2aad79a1.png">
 
 
-## TTYD webssh 的部署
+## ttyd / filebrowser webssh 的部署
 
 * 原理
 ```
 +---------+     argo     +---------+     http     +--------+    ssh    +-----------+
 | browser | <==========> | CF edge | <==========> |  ttyd  | <=======> | ssh server|
 +---------+     argo     +---------+   websocket  +--------+    ssh    +-----------+
+
++---------+     argo     +---------+     http     +--------------+    ftp    +-----------+
+| browser | <==========> | CF edge | <==========> | filebrowser  | <=======> | ftp server|
++---------+     argo     +---------+   websocket  +--------------+    ftp    +-----------+
 ```
 
-* 只能使用 Json 方式建的隧道，不能使用 Token
 
+* 使用 Json 方式建的隧道
+  
 <img width="1643" alt="image" src="https://user-images.githubusercontent.com/92626977/235453084-a8c55417-18b4-4a47-9eef-ee3053564bff.png">
 
-<img width="1347" alt="image" src="https://user-images.githubusercontent.com/92626977/235453394-2d8fd1e9-02d0-4fa6-8c20-dda903fd06ae.png">
+<img width="1303" alt="image" src="https://github.com/fscarmen2/aa/assets/92626977/652ef3ff-c9a9-4771-92c8-bab6c516abeb">
 
-<img width="1540" alt="image" src="https://user-images.githubusercontent.com/92626977/235454653-3ac83b16-b6f4-477b-bccf-2cce8bcfbabe.png">
+<img width="1001" alt="image" src="https://github.com/fscarmen2/aa/assets/92626977/5b5e0143-ba5a-4b6a-a7fd-e77ef9d0703e">
+
+<img width="1527" alt="image" src="https://github.com/fscarmen2/rrr/assets/92626977/91cece0d-cc61-4681-8eae-03f961a16976">
 
 
 ## 鸣谢下列作者的文章和项目:

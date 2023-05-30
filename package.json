@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Express Hello World",
   "main": "server.js",
-  "repository": "https://github.com/fscarmen2/X-for-Glitch",
+  "repository": "https://github.com/fscarmen2/Argo-X-JS-PaaS",
   "author": "fscarmen",
   "license": "MIT",
   "private": false,
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "http-proxy-middleware": "^2.0.6",
+    "http-proxy-middleware": "^3.0.0-beta.0",
     "request": "^2.88.2",
     "basic-auth": "^2.0.1"
   },
