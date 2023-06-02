@@ -105,9 +105,9 @@
   
 <img width="1643" alt="image" src="https://user-images.githubusercontent.com/92626977/235453084-a8c55417-18b4-4a47-9eef-ee3053564bff.png">
 
-<img width="1303" alt="image" src="https://github.com/fscarmen2/aa/assets/92626977/652ef3ff-c9a9-4771-92c8-bab6c516abeb">
-
-<img width="1001" alt="image" src="https://github.com/fscarmen2/aa/assets/92626977/5b5e0143-ba5a-4b6a-a7fd-e77ef9d0703e">
+<img width="1667" alt="image" src="https://github.com/fscarmen2/X-for-Glitch/assets/92626977/f124705a-04cc-470b-9781-c56eb2f8d361">
+  
+<img width="1431" alt="image" src="https://github.com/fscarmen2/X-for-Glitch/assets/92626977/fb0272a0-22bf-4ea2-a985-21cb9384cf4d">
 
 <img width="1527" alt="image" src="https://github.com/fscarmen2/rrr/assets/92626977/91cece0d-cc61-4681-8eae-03f961a16976">
 
