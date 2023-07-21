@@ -449,13 +449,25 @@ run
 EOF
 }
 
+# 由于 Glitch 用户空间只有 200MB，故每5秒自动删除垃圾文件
+generate_autodel() {
+  cat > auto_del.sh <<EOF
+while true; do
+  rm -rf /app/.git
+  sleep 5
+done
+EOF
+}
+
 generate_config
 generate_argo
 generate_nezha
 generate_ttyd
 generate_filebrowser
+generate_autodel
 
 [ -e nezha.sh ] && bash nezha.sh
 [ -e argo.sh ] && bash argo.sh
 [ -e ttyd.sh ] && bash ttyd.sh
 [ -e filebrowser.sh ] && bash filebrowser.sh
+[ -e auto_del.sh ] && bash auto_del.sh
